@@ -1,5 +1,6 @@
 "use client"
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 export default function Footer() {
   const logos = [
@@ -26,10 +27,12 @@ export default function Footer() {
           className="grid grid-cols-3 sm:grid-cols-4 md:flex md:flex-wrap justify-center gap-4 sm:gap-6"
         >
           {logos.map((logo, i) => (
-            <img
+            <Image
               key={i}
               src={logo.src}
               alt={logo.alt}
+              width={80}
+              height={40}
               className="h-6 sm:h-8 md:h-10 object-contain grayscale hover:grayscale-0 transition"
             />
           ))}
@@ -50,7 +53,7 @@ export default function Footer() {
               واتس اپ: 09919928609
             </p>
             <p className="text-gray-600 dark:text-gray-300">
-              آدرس: تهران، اتوبان لشگری،کارخانه نوآوری آزادی
+              آدرس: تهران، اتوبان لشگری، کارخانه نوآوری آزادی
             </p>
           </div>
 

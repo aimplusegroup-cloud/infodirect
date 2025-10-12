@@ -57,7 +57,7 @@ export default function Pricing() {
       return sortDir === "asc" ? av.localeCompare(bv, "fa", { numeric: true }) : bv.localeCompare(av, "fa", { numeric: true })
     })
     return cp
-  }, [previewData, sortBy, sortDir])
+  }, [sortBy, sortDir])
 
   const handleSort = (col: keyof Row | "id") => {
     if (sortBy === col) setSortDir(prev => (prev === "asc" ? "desc" : "asc"))
@@ -93,6 +93,29 @@ export default function Pricing() {
     const phoneNumber = "989919928609"
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(orderText)}`
     window.open(url, "_blank")
+  }
+
+  const handleCheckout = async () => {
+    if (selectedItems.length === 0) return
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: selectedItems,
+          total: finalPrice,
+        }),
+      })
+      const data = await res.json()
+      if (data?.url) {
+        window.location.href = data.url
+      } else {
+        alert("خطا در ایجاد تراکنش")
+      }
+    } catch (err) {
+      console.error(err)
+      alert("ارتباط با سرور برقرار نشد")
+    }
   }
 
   return (
@@ -141,7 +164,7 @@ export default function Pricing() {
               <p className="text-base sm:text-xl font-extrabold text-gray-900 dark:text-gray-100">
                 {finalPrice.toLocaleString("fa-IR")} تومان
               </p>
-              {discount > 0 && (
+                            {discount > 0 && (
                 <p className="mt-0.5 text-xs sm:text-sm text-green-600 dark:text-green-400">
                   شامل {(discount * 100).toFixed(0)}٪ تخفیف
                 </p>
@@ -155,7 +178,7 @@ export default function Pricing() {
                            text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
               >
                 {showPreview ? "بستن پیش‌نمایش" : "نمونه فایل"}
-                            </button>
+              </button>
             </>
           ) : (
             <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
@@ -221,23 +244,22 @@ export default function Pricing() {
           </div>
 
           {/* دکمه‌ها */}
-	<button
-  	onClick={() => {}}
-  	className="mt-2 w-full px-3 py-1.5 rounded-md text-white text-xs sm:text-sm 
-             bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 transition"
-  	disabled={count === 0}
-	>
-  	خرید از طریق درگاه پرداخت
-	</button>
-	<button
-  	onClick={handleWhatsAppOrder}
-  	className="mt-1 w-full px-3 py-1.5 rounded-md text-white text-xs sm:text-sm 
-             bg-[#25D366] hover:bg-green-500 disabled:opacity-50 transition"
-  	disabled={count === 0}
-	>
-  	سفارش سریع در واتس‌اپ
-	</button>
-
+          <button
+            onClick={handleCheckout}
+            className="mt-2 w-full px-3 py-1.5 rounded-md text-white text-xs sm:text-sm 
+                       bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 transition"
+            disabled={count === 0}
+          >
+            خرید از طریق درگاه پرداخت
+          </button>
+          <button
+            onClick={handleWhatsAppOrder}
+            className="mt-1 w-full px-3 py-1.5 rounded-md text-white text-xs sm:text-sm 
+                       bg-[#25D366] hover:bg-green-500 disabled:opacity-50 transition"
+            disabled={count === 0}
+          >
+            سفارش سریع در واتس‌اپ
+          </button>
         </div>
       </div>
     </div>

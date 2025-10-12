@@ -1,21 +1,26 @@
 import "./globals.css"
 import type { Metadata } from "next"
+import { headers } from "next/headers"
 
 export const metadata: Metadata = {
   title: "Infodirect",
   description: "Minimal single-screen staged landing",
   icons: {
-    icon: "/infodirect.png", // 👈 یا infodirect.ico اگر همونو گذاشتی
-    apple: "/infodirect.png", // برای iOS (اختیاری)
+    icon: "/infodirect.png",
+    apple: "/infodirect.png",
   },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+// 👇 تابع RootLayout باید async باشه
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const nonce = (await headers()).get("x-nonce") || undefined
+
   return (
     <html lang="fa" suppressHydrationWarning>
       <head>
-        {/* اسکریپت برای جلوگیری از فلیکر دارک مود */}
+        {/* اسکریپت جلوگیری از فلیکر دارک مود با nonce */}
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
