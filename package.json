@@ -10,6 +10,7 @@
   "dependencies": {
     "@prisma/client": "^5.19.1",
     "autoprefixer": "^10.4.20",
+    "dotenv": "^17.2.3",
     "framer-motion": "^10.16.4",
     "lenis": "^1.0.39",
     "next": "15.5.4",
