@@ -1,10 +1,11 @@
 import "./globals.css"
 import type { Metadata } from "next"
 import { headers } from "next/headers"
+import Script from "next/script"
 
 export const metadata: Metadata = {
   title: "Infodirect",
-  description: "Minimal single-screen staged landing",
+  // توضیحات رو فقط اینجا حذف کردیم تا دوباره در <head> دستی تکرار نشه
   icons: {
     icon: "/infodirect.png",
     apple: "/infodirect.png",
@@ -25,6 +26,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://infodirect.ir/" />
 
+        {/* توضیحات فقط یک بار */}
         <meta
           name="description"
           content="InfoDirect اطلاعات تماس شرکت‌های شرکت‌کننده در نمایشگاه‌های بین‌المللی تهران و سایر رویدادها را گردآوری و به‌صورت فایل اکسل ساختاریافته ارائه می‌دهد. این داده‌ها شامل شرکت‌های فعال در صنایع مختلف مانند مبلمان، صنایع غذایی، تجهیزات پزشکی، ماشین‌آلات صنعتی، فناوری اطلاعات، پوشاک و بسیاری حوزه‌های دیگر است. تیم‌های فروش و بازاریابی می‌توانند با استفاده از این داده‌ها همکاری‌های سازمانی را توسعه دهند، مشتریان بالقوه را شناسایی کنند و کمپین‌های B2B هدفمند اجرا کنند."
@@ -33,6 +35,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           name="keywords"
           content="نمایشگاه بین‌المللی تهران, اطلاعات تماس, لیست شرکت‌کنندگان, داده‌های نمایشگاهی, اکسل شرکت‌ها, فروش B2B, بازاریابی B2B, توسعه همکاری سازمانی, سرنخ‌های بازاریابی, پایگاه داده شرکت‌ها, مبلمان, صنایع غذایی, تجهیزات پزشکی, ماشین‌آلات, فناوری اطلاعات, پوشاک"
         />
+
+        {/* ======================== */}
+        {/* hreflang (اگر چندزبانه) */}
+        {/* ======================== */}
+        <link rel="alternate" href="https://infodirect.ir/" hreflang="fa" />
+        <link rel="alternate" href="https://infodirect.ir/en" hreflang="en" />
 
         {/* ======================== */}
         {/* Open Graph */}
@@ -105,31 +113,42 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+      </head>
+      <body className="font-sans antialiased bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-500">
+        {children}
 
         {/* ======================== */}
         {/* Dark Mode Flicker Fix */}
         {/* ======================== */}
-        <script
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const theme = localStorage.getItem('theme');
-                  if (theme === 'dark' || 
-                     (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
-                } catch (_) {}
-              })();
-            `,
-          }}
+        <Script id="theme-script" strategy="beforeInteractive" nonce={nonce}>
+          {`
+            try {
+              const theme = localStorage.getItem('theme');
+              if (theme === 'dark' || 
+                 (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
+            } catch (_) {}
+          `}
+        </Script>
+
+        {/* ======================== */}
+        {/* Google Analytics (GA4) */}
+        {/* ======================== */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+          strategy="afterInteractive"
         />
-      </head>
-      <body className="font-sans antialiased bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-500">
-        {children}
+        <Script id="ga-script" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXX');
+          `}
+        </Script>
       </body>
     </html>
   )
