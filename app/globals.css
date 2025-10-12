@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* حذف اسکرول صفحه */
+html, body {
+  height: 100%;
+}
+
+/* کمک به یکنواختی تایپوگرافی */
+:root {
+  color-scheme: light dark; /* ✅ اصلاح شد */
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* فونت BNazanin */
+@font-face {
+  font-family: "BNazanin";
+  src: url("/fonts/BNazanin.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.text-gradient {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
