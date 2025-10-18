@@ -35,6 +35,9 @@ interface JourneyItem { path: string[] }
 interface ExhibitionItem { id: string; title: string }
 interface SearchItem { query: string; count: number }
 
+// این همون تایپی هست که SalesCard انتظار داره
+interface SalesItem { name: string; sales: number }
+
 interface DashboardData {
   kpis?: KPIs
   daily?: TrendItem[]
@@ -95,7 +98,13 @@ export default function DashboardPage() {
         <>
           <KPIsCard kpis={data.kpis} />
           <TrendsCard range={range} data={(data.daily || []) as TrendItem[]} />
-          <SalesCard range={range} data={(data.sales || []) as SaleItem[]} />
+          <SalesCard
+            range={range}
+            data={(data.sales || []).map(s => ({
+              name: s.id,
+              sales: s.amount
+            })) as SalesItem[]}
+          />
           <BehaviorCard data={(data.behavior || []) as BehaviorItem[]} />
           <FunnelCard data={(data.funnel || []) as FunnelItem[]} />
           <TrafficCard data={(data.traffic || []) as TrafficItem[]} />
