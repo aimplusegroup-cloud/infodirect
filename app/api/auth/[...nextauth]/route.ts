@@ -1,8 +1,7 @@
-
-import NextAuth from "next-auth"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
-export const authOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -32,4 +31,5 @@ export const authOptions = {
 
 const handler = NextAuth(authOptions)
 
+// در App Router باید این دو متد رو export کنی
 export { handler as GET, handler as POST }
