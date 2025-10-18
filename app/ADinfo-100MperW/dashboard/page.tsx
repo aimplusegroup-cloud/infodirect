@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react"
 
 import KPIsCard from "./kpis/KPIsCard"
-import TrendsCard from "./trends/TrendsCard"
 import SalesCard from "./sales/SalesCard"
 import BehaviorCard from "./behavior/BehaviorCard"
 import FunnelCard from "./funnel/FunnelCard"
@@ -97,7 +96,6 @@ export default function DashboardPage() {
       {data && (
         <>
           <KPIsCard kpis={data.kpis} />
-          <TrendsCard range={range} data={data.daily} />
           <SalesCard range={range} data={data.sales} />
           <BehaviorCard data={data.behavior} />
           <FunnelCard data={data.funnel} />
