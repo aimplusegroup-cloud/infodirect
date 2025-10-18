@@ -14,7 +14,7 @@ import SearchesCard from "./searches/SearchesCard"
 
 type Range = "day" | "week" | "month"
 
-// ✨ تایپ‌های دقیق برای داده‌ها
+// ✨ تایپ‌های دقیق
 interface KPIs {
   visitors?: number
   orders?: number
@@ -26,47 +26,15 @@ interface KPIs {
   bounceRate?: number
 }
 
-interface TrendItem {
-  date: string
-  views: number
-  revenue: number
-}
+interface TrendItem { date: string; views: number; revenue: number }
+interface SaleItem { id: string; amount: number }
+interface BehaviorItem { action: string; count: number }
+interface FunnelItem { step: string; users: number }
+interface TrafficItem { source: string; visits: number }
+interface JourneyItem { path: string[] }
+interface ExhibitionItem { id: string; title: string }
+interface SearchItem { query: string; count: number }
 
-interface SaleItem {
-  id: string
-  amount: number
-}
-
-interface BehaviorItem {
-  action: string
-  count: number
-}
-
-interface FunnelItem {
-  step: string
-  users: number
-}
-
-interface TrafficItem {
-  source: string
-  visits: number
-}
-
-interface JourneyItem {
-  path: string[]
-}
-
-interface ExhibitionItem {
-  id: string
-  title: string
-}
-
-interface SearchItem {
-  query: string
-  count: number
-}
-
-// ✨ DashboardData
 interface DashboardData {
   kpis?: KPIs
   daily?: TrendItem[]
@@ -87,8 +55,8 @@ export default function DashboardPage() {
   const fetchData = useCallback(() => {
     setLoading(true)
     fetch(`/api/dashboard?range=${range}`)
-      .then(r => r.json())
-      .then((json: DashboardData) => setData(json))
+      .then(r => r.json() as Promise<DashboardData>)
+      .then(json => setData(json))
       .finally(() => setLoading(false))
   }, [range])
 
@@ -126,14 +94,14 @@ export default function DashboardPage() {
       {data && (
         <>
           <KPIsCard kpis={data.kpis} />
-          <TrendsCard range={range} data={data.daily || []} />
-          <SalesCard range={range} data={data.sales || []} />
-          <BehaviorCard data={data.behavior || []} />
-          <FunnelCard data={data.funnel || []} />
-          <TrafficCard data={data.traffic || []} />
-          <JourneysCard data={data.journeys || []} />
-          <ExhibitionsCard data={data.exhibitions || []} />
-          <SearchesCard data={data.searches || []} />
+          <TrendsCard range={range} data={(data.daily || []) as TrendItem[]} />
+          <SalesCard range={range} data={(data.sales || []) as SaleItem[]} />
+          <BehaviorCard data={(data.behavior || []) as BehaviorItem[]} />
+          <FunnelCard data={(data.funnel || []) as FunnelItem[]} />
+          <TrafficCard data={(data.traffic || []) as TrafficItem[]} />
+          <JourneysCard data={(data.journeys || []) as JourneyItem[]} />
+          <ExhibitionsCard data={(data.exhibitions || []) as ExhibitionItem[]} />
+          <SearchesCard data={(data.searches || []) as SearchItem[]} />
         </>
       )}
     </div>
