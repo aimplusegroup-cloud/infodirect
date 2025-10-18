@@ -90,7 +90,6 @@ export default function DashboardPage() {
       {data && (
         <>
           <KPIsCard kpis={data.kpis} />
-          {/* TrendsCard و SalesCard حذف شدند */}
           <BehaviorCard data={data.behavior} />
           <FunnelCard data={data.funnel} />
           <TrafficCard data={data.traffic} />
