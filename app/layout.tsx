@@ -14,9 +14,9 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // گرفتن nonce از هدر (ست شده در middleware)
-  const nonce = headers().get("x-nonce") || undefined
+  const nonce = (await headers()).get("x-nonce") || undefined
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -119,7 +119,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="font-sans antialiased bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-500">
         <Providers>
-          <Tracker /> {/* ثبت بازدید صفحه */}
+          <Tracker />
           {children}
         </Providers>
 
