@@ -1,3 +1,4 @@
+// app/layout.tsx
 import "./globals.css"
 import type { Metadata } from "next"
 import { headers } from "next/headers"
@@ -13,8 +14,9 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const nonce = (await headers()).get("x-nonce") || undefined
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // گرفتن nonce از هدر (ست شده در middleware)
+  const nonce = headers().get("x-nonce") || undefined
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -71,6 +73,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {/* ======================== */}
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
@@ -91,9 +94,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             })
           }}
         />
-
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
@@ -144,7 +147,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
           strategy="afterInteractive"
         />
-        <Script id="ga-script" strategy="afterInteractive">
+        <Script id="ga-script" strategy="afterInteractive" nonce={nonce}>
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

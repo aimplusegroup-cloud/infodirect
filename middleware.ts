@@ -1,8 +1,9 @@
+// middleware.ts
 import { withAuth } from "next-auth/middleware"
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import crypto from "crypto"
 
-// تولید nonce تصادفی برای اسکریپت‌ها (فقط در Production استفاده می‌کنیم)
 function generateNonce() {
   return Buffer.from(crypto.randomUUID()).toString("base64")
 }
@@ -13,7 +14,6 @@ export default withAuth(
     const isDev = process.env.NODE_ENV !== "production"
 
     if (isDev) {
-      // 🔓 حالت توسعه → CSP بازتر برای HMR و React Refresh
       res.headers.set(
         "Content-Security-Policy",
         [
@@ -26,7 +26,6 @@ export default withAuth(
         ].join("; ")
       )
     } else {
-      // 🔐 حالت Production → CSP سخت‌گیرانه‌تر با nonce
       const nonce = generateNonce()
       res.headers.set(
         "Content-Security-Policy",
@@ -47,13 +46,11 @@ export default withAuth(
   },
   {
     callbacks: {
-      // فقط اگر سشن وجود داشته باشه اجازه ورود بده
       authorized: ({ token }) => !!token,
     },
   }
 )
 
-// فقط مسیر داشبورد محافظت بشه
 export const config = {
   matcher: ["/ADinfo-100MperW/dashboard/:path*"],
 }
