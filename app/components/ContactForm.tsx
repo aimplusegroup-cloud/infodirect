@@ -17,7 +17,8 @@ export default function ContactForm() {
       })
       const data = await res.json()
       setResponse(JSON.stringify(data))
-    } catch (err) {
+    } catch {
+      // نیازی به err نیست چون استفاده نمی‌شه
       setResponse("خطا در ارسال درخواست")
     }
   }

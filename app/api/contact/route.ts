@@ -1,4 +1,4 @@
-import type { NextRequest } from "next/server";
+import type { NextRequest } from "next/server"
 
 // هندلر GET برای تست سریع در مرورگر
 export async function GET() {
@@ -8,13 +8,13 @@ export async function GET() {
       status: 200,
       headers: { "Content-Type": "application/json" },
     }
-  );
+  )
 }
 
 // هندلر POST برای درخواست واقعی
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body = await req.json()
     return new Response(
       JSON.stringify({
         ok: true,
@@ -25,14 +25,15 @@ export async function POST(req: NextRequest) {
         status: 200,
         headers: { "Content-Type": "application/json" },
       }
-    );
-  } catch (_) {
+    )
+  } catch {
+    // نیازی به (_) نیست
     return new Response(
       JSON.stringify({ ok: false, error: "Invalid request" }),
       {
         status: 400,
         headers: { "Content-Type": "application/json" },
       }
-    );
+    )
   }
 }

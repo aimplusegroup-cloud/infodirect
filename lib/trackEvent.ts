@@ -1,5 +1,9 @@
-export function trackEvent(type: string, meta?: any) {
-  fetch("/api/track/event", {
+// lib/trackEvent.ts
+
+type EventMeta = Record<string, unknown>
+
+export function trackEvent(type: string, meta?: EventMeta): Promise<void> {
+  return fetch("/api/track/event", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -9,16 +13,17 @@ export function trackEvent(type: string, meta?: any) {
       referrer: document.referrer,
       device: navigator.userAgent,
     }),
-  })
+  }).then(() => undefined)
 }
 
+// اگر لازم داری خرید رو هم ثبت کنی
 export function trackPurchase(order: {
   sessionId: string
   total: number
   currency?: string
   items: { exhibition: string; year: number; unitPrice: number; quantity: number }[]
-}) {
-  fetch("/api/track/purchase", {
+}): Promise<void> {
+  return fetch("/api/track/purchase", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -26,5 +31,5 @@ export function trackPurchase(order: {
       currency: order.currency || "IRR",
       status: "success",
     }),
-  })
+  }).then(() => undefined)
 }

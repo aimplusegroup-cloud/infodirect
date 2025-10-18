@@ -17,6 +17,7 @@ export default function LoginPage() {
     await signIn("credentials", {
       username,
       password,
+      // مسیر درست داشبورد (بدون log در اول)
       callbackUrl: "/ADinfo-100MperW/dashboard",
     })
     setLoading(false)

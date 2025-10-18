@@ -2,16 +2,6 @@
 import { NextResponse } from "next/server"
 import { PrismaClient } from "@prisma/client"
 
-/**
- * Professional, production-ready stats API for InfoDirect
- * - Robust parsing for TEXT meta fields
- * - Real funnel metrics from events
- * - Real sales per exhibition from OrderItem
- * - Time series (views + revenue) with configurable range
- * - Safe fallbacks, typed outputs, and defensive guards
- * - Ready for Next.js App Router
- */
-
 const prisma = new PrismaClient()
 
 /** ---- Types ---- */
@@ -29,37 +19,31 @@ type Funnel = {
   whatsappClicks: number
 }
 type StatsResponse = {
-  // traffic
   today: number
   week: number
   month: number
-  // interactions
   previews: number
   checkoutClicks: number
   whatsappClicks: number
   exhibitions: ExhibitionSelection[]
   searches: SearchItem[]
-  // sales
   orders: number
   totalRevenue: number
   avgOrderValue: number
   conversionRate: number
   exhibitionSales: ExhibitionSale[]
-  // time series
   daily: DailyPoint[]
-  // behavior
   avgPageDuration: number
   previewAvgTime: number
   previewAvgScroll: number
-  // funnel
   funnel: Funnel
 }
 
 /** ---- Utilities ---- */
-function safeParse<T = any>(text: string | null | undefined, fallback: T): T {
+function safeParse<T>(text: string | null | undefined, fallback: T): T {
   if (!text) return fallback
   try {
-    return JSON.parse(text)
+    return JSON.parse(text) as T
   } catch {
     return fallback
   }
@@ -70,7 +54,7 @@ function startOfDay(d: Date) {
 function startOfWeek(d: Date) {
   const copy = new Date(d)
   copy.setHours(0, 0, 0, 0)
-  const weekday = copy.getDay() // 0..6 (Sunday = 0)
+  const weekday = copy.getDay()
   copy.setDate(copy.getDate() - weekday)
   return copy
 }
@@ -107,19 +91,12 @@ function chooseRange(preset: RangePreset, now = new Date()) {
     case "90d":
       length = 90
       break
-    default:
-      length = 14
   }
   const start = addDays(end, -length + 1)
   return { start, end, length }
 }
 
 /** ---- Domain helpers ---- */
-
-/**
- * Build exhibition selection counts from events meta
- * meta example: { name: "نمایشگاه کتاب", year: 1403 }
- */
 async function getExhibitionSelections() {
   const rows = await prisma.event.findMany({
     where: { type: "select_exhibition" },
@@ -131,16 +108,11 @@ async function getExhibitionSelections() {
     const key = name?.trim() || "نامشخص"
     counter.set(key, (counter.get(key) ?? 0) + 1)
   }
-  const list: ExhibitionSelection[] = Array.from(counter.entries())
+  return Array.from(counter.entries())
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => b.count - a.count)
-  return list
 }
 
-/**
- * Build search terms from events meta
- * meta example: { query: "کتاب" }
- */
 async function getSearchTerms() {
   const rows = await prisma.event.findMany({
     where: { type: "search" },
@@ -152,17 +124,11 @@ async function getSearchTerms() {
     const key = query?.trim() || "?"
     counter.set(key, (counter.get(key) ?? 0) + 1)
   }
-  const list: SearchItem[] = Array.from(counter.entries())
+  return Array.from(counter.entries())
     .map(([query, count]) => ({ query, count }))
     .sort((a, b) => b.count - a.count)
-  return list
 }
 
-/**
- * Sales by exhibition from OrderItem (real sales, not just selections)
- * - Revenue = sum(unitPrice * quantity)
- * - Orders approximated by item lines count (can be enhanced with unique orderId aggregation)
- */
 async function getExhibitionSales() {
   const items = await prisma.orderItem.findMany({
     select: { exhibition: true, unitPrice: true, quantity: true, orderId: true },
@@ -174,18 +140,14 @@ async function getExhibitionSales() {
     const revenue = clampNonNegative((it.unitPrice || 0) * (it.quantity || 0))
     map.set(key, {
       exhibition: key,
-      orders: prev.orders + 1, // item-level count; for unique orders per exhibition, extra join logic is needed
+      orders: prev.orders + 1,
       quantity: prev.quantity + (it.quantity || 0),
       revenue: prev.revenue + revenue,
     })
   }
-  const list = Array.from(map.values()).sort((a, b) => b.revenue - a.revenue)
-  return list
+  return Array.from(map.values()).sort((a, b) => b.revenue - a.revenue)
 }
 
-/**
- * Compute funnel and basic counters
- */
 async function getFunnel(now = new Date()) {
   const sDay = startOfDay(now)
   const sWeek = startOfWeek(now)
@@ -218,11 +180,6 @@ async function getFunnel(now = new Date()) {
   return { todayViews, weekViews, monthViews, funnel, ordersCount }
 }
 
-/**
- * Behavior metrics from events.meta:
- * - page_leave: meta.duration (ms)
- * - preview_time: meta.duration (ms), meta.scrollDepth (0-100)
- */
 async function getBehaviorMetrics() {
   const [leavesRaw, previewTimeRaw] = await Promise.all([
     prisma.event.findMany({ where: { type: "page_leave" }, select: { meta: true } }),
@@ -232,18 +189,15 @@ async function getBehaviorMetrics() {
   const leaveDurations: number[] = []
   for (const e of leavesRaw) {
     const { duration } = safeParse<{ duration?: number }>(e.meta, {})
-    if (Number.isFinite(duration)) leaveDurations.push(duration!)
+    if (Number.isFinite(duration)) leaveDurations.push(duration)
   }
 
   const previewDurations: number[] = []
   const previewScrolls: number[] = []
   for (const e of previewTimeRaw) {
-    const { duration, scrollDepth } = safeParse<{
-      duration?: number
-      scrollDepth?: number
-    }>(e.meta, {})
-    if (Number.isFinite(duration)) previewDurations.push(duration!)
-    if (Number.isFinite(scrollDepth)) previewScrolls.push(scrollDepth!)
+    const { duration, scrollDepth } = safeParse<{ duration?: number; scrollDepth?: number }>(e.meta, {})
+    if (Number.isFinite(duration)) previewDurations.push(duration)
+    if (Number.isFinite(scrollDepth)) previewScrolls.push(scrollDepth)
   }
 
   return {
@@ -253,12 +207,8 @@ async function getBehaviorMetrics() {
   }
 }
 
-/**
- * Time series: views + revenue for chosen range
- * Generates daily points (inclusive of end, starting from start)
- */
 async function getDailySeries(range: RangePreset, now = new Date()): Promise<DailyPoint[]> {
-  const { start, end, length } = chooseRange(range, now)
+  const { start, length } = chooseRange(range, now)
   const points: DailyPoint[] = []
 
   for (let i = 0; i < length; i++) {
@@ -282,11 +232,12 @@ async function getDailySeries(range: RangePreset, now = new Date()): Promise<Dai
   return points
 }
 
-/**
- * Sales aggregates
- */
 async function getSalesAggregates() {
-  const agg = await prisma.order.aggregate({ _sum: { total: true }, _avg: { total: true }, _count: { _all: true } })
+  const agg = await prisma.order.aggregate({
+    _sum: { total: true },
+    _avg: { total: true },
+    _count: { _all: true },
+  })
   const orders = clampNonNegative(agg._count._all || 0)
   const totalRevenue = clampNonNegative(agg._sum.total || 0)
   const avgOrderValue = clampNonNegative(agg._avg.total || 0)
@@ -299,7 +250,9 @@ export async function GET(req: Request) {
     // parse query params (range preset: day|week|month|90d)
     const url = new URL(req.url)
     const presetParam = (url.searchParams.get("range") || "").toLowerCase() as RangePreset
-    const range: RangePreset = ["day", "week", "month", "90d"].includes(presetParam) ? presetParam : "week"
+    const range: RangePreset = ["day", "week", "month", "90d"].includes(presetParam)
+      ? presetParam
+      : "week"
 
     const now = new Date()
 
@@ -326,7 +279,6 @@ export async function GET(req: Request) {
     const { orders, totalRevenue, avgOrderValue } = salesAgg
 
     // robust conversion rate: today orders / today pageviews
-    // Note: if you prefer overall conversion, change numerator/denominator accordingly.
     const conversionRate = todayViews > 0 ? (ordersCount / todayViews) * 100 : 0
 
     const payload: StatsResponse = {
@@ -356,8 +308,6 @@ export async function GET(req: Request) {
       funnel,
     }
 
-    // Optional: caching headers (tune to your needs)
-    // Here we avoid caching in dev; for prod, you can set short revalidation windows.
     return NextResponse.json(payload, {
       headers: {
         "Cache-Control": "no-store",

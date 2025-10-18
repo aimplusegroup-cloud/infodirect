@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { headers } from "next/headers"
 import Script from "next/script"
 import Providers from "./providers"
-import Tracker from "./Tracker"   // 👈 اضافه شد
+import Tracker from "./Tracker"
 
 export const metadata: Metadata = {
   title: "Infodirect",
@@ -110,13 +110,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {/* Performance Hints */}
         {/* ======================== */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
       </head>
       <body className="font-sans antialiased bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-500">
         <Providers>
-          <Tracker />   {/* 👈 ثبت بازدید صفحه */}
+          <Tracker /> {/* ثبت بازدید صفحه */}
           {children}
         </Providers>
 

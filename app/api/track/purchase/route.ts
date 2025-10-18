@@ -1,10 +1,23 @@
 import { NextResponse } from "next/server"
 import prisma from "../../../../lib/prisma"
 
+interface PurchaseItem {
+  exhibition: string
+  year: number
+  unitPrice: number
+  quantity?: number
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { sessionId, total, currency, status, items } = body
+    const { sessionId, total, currency, status, items } = body as {
+      sessionId: string
+      total: number
+      currency?: string
+      status?: string
+      items: PurchaseItem[]
+    }
 
     const order = await prisma.order.create({
       data: {
@@ -13,11 +26,11 @@ export async function POST(req: Request) {
         currency: currency || "IRR",
         status: status || "success",
         items: {
-          create: items.map((item: any) => ({
+          create: items.map((item: PurchaseItem) => ({
             exhibition: item.exhibition,
             year: item.year,
             unitPrice: item.unitPrice,
-            quantity: item.quantity || 1,
+            quantity: item.quantity ?? 1,
           })),
         },
       },

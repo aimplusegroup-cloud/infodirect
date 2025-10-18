@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 
 import KPIsCard from "./kpis/KPIsCard"
 import TrendsCard from "./trends/TrendsCard"
@@ -14,23 +14,36 @@ import SearchesCard from "./searches/SearchesCard"
 
 type Range = "day" | "week" | "month"
 
+// یک تایپ کلی برای داده‌های داشبورد
+interface DashboardData {
+  kpis?: unknown
+  daily?: unknown[]
+  sales?: unknown[]
+  behavior?: unknown[]
+  funnel?: unknown[]
+  traffic?: unknown[]
+  journeys?: unknown[]
+  exhibitions?: unknown[]
+  searches?: unknown[]
+}
+
 export default function DashboardPage() {
   const [range, setRange] = useState<Range>("day")
-  const [data, setData] = useState<any>(null)
+  const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const fetchData = () => {
+  const fetchData = useCallback(() => {
     setLoading(true)
     fetch(`/api/dashboard?range=${range}`)
       .then(r => r.json())
-      .then(setData)
+      .then((json: DashboardData) => setData(json))
       .finally(() => setLoading(false))
-  }
+  }, [range])
 
-  // بارگذاری اولیه
+  // بارگذاری اولیه و تغییر بازه
   useEffect(() => {
     fetchData()
-  }, [range])
+  }, [fetchData])
 
   return (
     <div className="space-y-6">
