@@ -14,10 +14,16 @@ import SearchesCard from "./searches/SearchesCard"
 
 type Range = "day" | "week" | "month"
 
-// ✨ تایپ‌های دقیق برای هر کارت
-interface KPI {
-  name: string
-  value: number
+// ✨ تایپ‌های دقیق برای داده‌ها
+interface KPIs {
+  visitors?: number
+  orders?: number
+  revenue?: number
+  conversionRate?: number
+  aov?: number
+  arpu?: number
+  retentionRate?: number
+  bounceRate?: number
 }
 
 interface TrendItem {
@@ -60,9 +66,9 @@ interface SearchItem {
   count: number
 }
 
-// ✨ حالا DashboardData با تایپ درست
+// ✨ DashboardData
 interface DashboardData {
-  kpis?: KPI[]
+  kpis?: KPIs
   daily?: TrendItem[]
   sales?: SaleItem[]
   behavior?: BehaviorItem[]
@@ -119,7 +125,7 @@ export default function DashboardPage() {
 
       {data && (
         <>
-          <KPIsCard kpis={data.kpis || []} />
+          <KPIsCard kpis={data.kpis} />
           <TrendsCard range={range} data={data.daily || []} />
           <SalesCard range={range} data={data.sales || []} />
           <BehaviorCard data={data.behavior || []} />
