@@ -13,7 +13,6 @@ import SearchesCard from "./searches/SearchesCard"
 
 type Range = "day" | "week" | "month"
 
-// ✨ تایپ‌های دقیق
 interface KPIs {
   visitors?: number
   orders?: number
@@ -25,8 +24,7 @@ interface KPIs {
   bounceRate?: number
 }
 
-interface TrendItem { date: string; views: number; revenue: number }
-interface SalesItem { name: string; sales: number }
+interface SaleItem { id: string; amount: number }
 interface BehaviorItem { action: string; count: number }
 interface FunnelItem { step: string; users: number }
 interface TrafficItem { source: string; visits: number }
@@ -36,8 +34,7 @@ interface SearchItem { query: string; count: number }
 
 interface DashboardData {
   kpis?: KPIs
-  daily?: TrendItem[]
-  sales?: SalesItem[]
+  sales?: SaleItem[]
   behavior?: BehaviorItem[]
   funnel?: FunnelItem[]
   traffic?: TrafficItem[]
@@ -96,7 +93,14 @@ export default function DashboardPage() {
       {data && (
         <>
           <KPIsCard kpis={data.kpis} />
-          <SalesCard range={range} data={data.sales} />
+          {/* TrendsCard موقتاً حذف شد */}
+          <SalesCard
+            range={range}
+            data={(data.sales || []).map(s => ({
+              name: s.id,
+              sales: s.amount
+            }))}
+          />
           <BehaviorCard data={data.behavior} />
           <FunnelCard data={data.funnel} />
           <TrafficCard data={data.traffic} />
