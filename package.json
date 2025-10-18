@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "gen:map": "node scripts/generate-map.js",
     "normalize": "node scripts/normalize-exhibitions.js",
     "seed": "ts-node --transpile-only prisma/seed.ts",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
