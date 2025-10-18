@@ -42,8 +42,8 @@ export default function Home() {
       {/* هدر */}
       <header className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between p-4">
         <Image
-          src="/logo.png"
-          alt="Logo"
+          src="/infodirect.png"
+          alt="infodirect.png"
           width={64}
           height={64}
           priority
