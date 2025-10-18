@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react"
 
 import KPIsCard from "./kpis/KPIsCard"
-import SalesCard from "./sales/SalesCard"
 import BehaviorCard from "./behavior/BehaviorCard"
 import FunnelCard from "./funnel/FunnelCard"
 import TrafficCard from "./traffic/TrafficCard"
@@ -24,7 +23,6 @@ interface KPIs {
   bounceRate?: number
 }
 
-interface SaleItem { id: string; amount: number }
 interface BehaviorItem { action: string; count: number }
 interface FunnelItem { step: string; users: number }
 interface TrafficItem { source: string; visits: number }
@@ -34,7 +32,6 @@ interface SearchItem { query: string; count: number }
 
 interface DashboardData {
   kpis?: KPIs
-  sales?: SaleItem[]
   behavior?: BehaviorItem[]
   funnel?: FunnelItem[]
   traffic?: TrafficItem[]
@@ -93,14 +90,7 @@ export default function DashboardPage() {
       {data && (
         <>
           <KPIsCard kpis={data.kpis} />
-          {/* TrendsCard موقتاً حذف شد */}
-          <SalesCard
-            range={range}
-            data={(data.sales || []).map(s => ({
-              name: s.id,
-              sales: s.amount
-            }))}
-          />
+          {/* TrendsCard و SalesCard حذف شدند */}
           <BehaviorCard data={data.behavior} />
           <FunnelCard data={data.funnel} />
           <TrafficCard data={data.traffic} />
