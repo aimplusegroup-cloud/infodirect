@@ -14,17 +14,63 @@ import SearchesCard from "./searches/SearchesCard"
 
 type Range = "day" | "week" | "month"
 
-// یک تایپ کلی برای داده‌های داشبورد
+// ✨ تایپ‌های دقیق برای هر کارت
+interface KPI {
+  name: string
+  value: number
+}
+
+interface TrendItem {
+  date: string
+  views: number
+  revenue: number
+}
+
+interface SaleItem {
+  id: string
+  amount: number
+}
+
+interface BehaviorItem {
+  action: string
+  count: number
+}
+
+interface FunnelItem {
+  step: string
+  users: number
+}
+
+interface TrafficItem {
+  source: string
+  visits: number
+}
+
+interface JourneyItem {
+  path: string[]
+}
+
+interface ExhibitionItem {
+  id: string
+  title: string
+}
+
+interface SearchItem {
+  query: string
+  count: number
+}
+
+// ✨ حالا DashboardData با تایپ درست
 interface DashboardData {
-  kpis?: unknown
-  daily?: unknown[]
-  sales?: unknown[]
-  behavior?: unknown[]
-  funnel?: unknown[]
-  traffic?: unknown[]
-  journeys?: unknown[]
-  exhibitions?: unknown[]
-  searches?: unknown[]
+  kpis?: KPI[]
+  daily?: TrendItem[]
+  sales?: SaleItem[]
+  behavior?: BehaviorItem[]
+  funnel?: FunnelItem[]
+  traffic?: TrafficItem[]
+  journeys?: JourneyItem[]
+  exhibitions?: ExhibitionItem[]
+  searches?: SearchItem[]
 }
 
 export default function DashboardPage() {
@@ -40,14 +86,12 @@ export default function DashboardPage() {
       .finally(() => setLoading(false))
   }, [range])
 
-  // بارگذاری اولیه و تغییر بازه
   useEffect(() => {
     fetchData()
   }, [fetchData])
 
   return (
     <div className="space-y-6">
-      {/* هدر و انتخاب بازه */}
       <div className="flex justify-between items-center">
         <h2 className="text-base md:text-lg font-bold">داشبورد</h2>
         <div className="flex gap-2">
@@ -71,13 +115,11 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* وضعیت بارگذاری */}
       {loading && <div className="text-sm text-gray-600">در حال بارگذاری...</div>}
 
-      {/* کارت‌ها */}
       {data && (
         <>
-          <KPIsCard kpis={data.kpis} />
+          <KPIsCard kpis={data.kpis || []} />
           <TrendsCard range={range} data={data.daily || []} />
           <SalesCard range={range} data={data.sales || []} />
           <BehaviorCard data={data.behavior || []} />
