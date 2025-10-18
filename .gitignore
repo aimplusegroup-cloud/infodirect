@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -32,6 +30,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example   # می‌تونی یک نمونه env نگه داری
 
 # vercel
 .vercel
@@ -40,3 +39,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# prisma
+prisma/dev.db
+prisma/dev.db-journal
+
+# optional: اگر نمی‌خوای migrationها رو نگه داری
+# prisma/migrations/

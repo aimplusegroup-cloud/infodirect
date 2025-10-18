@@ -1,0 +1,41 @@
+// C:\My projects\infodirect\prisma\schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      String
+  sessionId String
+  url       String?
+  referrer  String?
+  device    String?
+  meta      String?   // اینجا به جای Json از String استفاده کن
+}
+
+model Order {
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  sessionId    String
+  total        Int
+  currency     String      @default("IRR")
+  status       String      @default("success") // success | failed | pending
+  items        OrderItem[]
+}
+
+model OrderItem {
+  id           Int     @id @default(autoincrement())
+  orderId      Int
+  order        Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  exhibition   String
+  year         Int
+  unitPrice    Int
+  quantity     Int      @default(1)
+}

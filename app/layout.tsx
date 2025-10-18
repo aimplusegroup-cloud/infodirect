@@ -2,10 +2,11 @@ import "./globals.css"
 import type { Metadata } from "next"
 import { headers } from "next/headers"
 import Script from "next/script"
+import Providers from "./providers"
+import Tracker from "./Tracker"   // 👈 اضافه شد
 
 export const metadata: Metadata = {
   title: "Infodirect",
-  // توضیحات رو فقط اینجا حذف کردیم تا دوباره در <head> دستی تکرار نشه
   icons: {
     icon: "/infodirect.png",
     apple: "/infodirect.png",
@@ -16,7 +17,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const nonce = (await headers()).get("x-nonce") || undefined
 
   return (
-    <html lang="fa" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* ======================== */}
         {/* SEO Meta Tags */}
@@ -24,45 +25,44 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://infodirect.ir/" />
+        <link rel="canonical" href="https://infodirect.ir/en" />
 
-        {/* توضیحات فقط یک بار */}
         <meta
           name="description"
-          content="InfoDirect اطلاعات تماس شرکت‌های شرکت‌کننده در نمایشگاه‌های بین‌المللی تهران و سایر رویدادها را گردآوری و به‌صورت فایل اکسل ساختاریافته ارائه می‌دهد. این داده‌ها شامل شرکت‌های فعال در صنایع مختلف مانند مبلمان، صنایع غذایی، تجهیزات پزشکی، ماشین‌آلات صنعتی، فناوری اطلاعات، پوشاک و بسیاری حوزه‌های دیگر است. تیم‌های فروش و بازاریابی می‌توانند با استفاده از این داده‌ها همکاری‌های سازمانی را توسعه دهند، مشتریان بالقوه را شناسایی کنند و کمپین‌های B2B هدفمند اجرا کنند."
+          content="InfoDirect provides structured Excel files with contact details of companies participating in international exhibitions in Tehran and other events. These datasets include companies across industries such as furniture, food, medical equipment, industrial machinery, IT, clothing, and more. Sales and marketing teams can use this data to identify prospects, expand B2B collaborations, and run targeted campaigns."
         />
         <meta
           name="keywords"
-          content="نمایشگاه بین‌المللی تهران, اطلاعات تماس, لیست شرکت‌کنندگان, داده‌های نمایشگاهی, اکسل شرکت‌ها, فروش B2B, بازاریابی B2B, توسعه همکاری سازمانی, سرنخ‌های بازاریابی, پایگاه داده شرکت‌ها, مبلمان, صنایع غذایی, تجهیزات پزشکی, ماشین‌آلات, فناوری اطلاعات, پوشاک"
+          content="Tehran International Exhibition, exhibitor contacts, exhibitor list, exhibition data, Excel company list, B2B sales, B2B marketing, business collaboration, lead generation, company database, furniture, food industry, medical equipment, machinery, IT, clothing"
         />
 
         {/* ======================== */}
-        {/* hreflang (اگر چندزبانه) */}
+        {/* hreflang (multilingual) */}
         {/* ======================== */}
-        <link rel="alternate" href="https://infodirect.ir/" hreflang="fa" />
-        <link rel="alternate" href="https://infodirect.ir/en" hreflang="en" />
+        <link rel="alternate" href="https://infodirect.ir/" hrefLang="fa" />
+        <link rel="alternate" href="https://infodirect.ir/en" hrefLang="en" />
 
         {/* ======================== */}
         {/* Open Graph */}
         {/* ======================== */}
-        <meta property="og:title" content="InfoDirect | داده‌های تماس شرکت‌کنندگان نمایشگاهی به‌صورت اکسل" />
+        <meta property="og:title" content="InfoDirect | Structured Excel Data of Exhibition Participants" />
         <meta
           property="og:description"
-          content="گردآوری و یکپارچه‌سازی لیست شرکت‌کنندگان نمایشگاه‌ها با اطلاعات تماس و خروجی اکسل؛ مناسب برای فروش و بازاریابی B2B در صنایع مختلف."
+          content="Curated and structured Excel lists of exhibition participants with contact details; ideal for B2B sales and marketing across industries."
         />
         <meta property="og:image" content="https://infodirect.ir/infodirect.png" />
-        <meta property="og:url" content="https://infodirect.ir" />
+        <meta property="og:url" content="https://infodirect.ir/en" />
         <meta property="og:type" content="website" />
-        <meta property="og:locale" content="fa_IR" />
+        <meta property="og:locale" content="en_US" />
 
         {/* ======================== */}
         {/* Twitter Card */}
         {/* ======================== */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="InfoDirect | داده‌های تماس شرکت‌کنندگان نمایشگاهی به‌صورت اکسل" />
+        <meta name="twitter:title" content="InfoDirect | Structured Excel Data of Exhibition Participants" />
         <meta
           name="twitter:description"
-          content="لیست‌های اکسل آماده استفاده از شرکت‌های فعال در صنایع مختلف نمایشگاهی؛ مناسب برای همکاری‌های سازمانی و فروش B2B."
+          content="Ready-to-use Excel lists of companies from various industries; perfect for B2B collaboration and sales."
         />
         <meta name="twitter:image" content="https://infodirect.ir/infodirect.png" />
 
@@ -76,10 +76,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               "@context": "https://schema.org",
               "@type": "Organization",
               "name": "InfoDirect",
-              "url": "https://infodirect.ir",
+              "url": "https://infodirect.ir/en",
               "logo": "https://infodirect.ir/infodirect.png",
               "description":
-                "InfoDirect اطلاعات تماس شرکت‌های شرکت‌کننده در نمایشگاه‌های بین‌المللی را در قالب فایل‌های اکسل آماده ارائه می‌دهد. این داده‌ها شامل شرکت‌های فعال در صنایع مختلف مانند مبلمان، صنایع غذایی، تجهیزات پزشکی، ماشین‌آلات صنعتی، فناوری اطلاعات، پوشاک و بسیاری حوزه‌های دیگر است. هدف ما کمک به تیم‌های فروش و بازاریابی برای دسترسی سریع به مشتریان بالقوه و توسعه همکاری‌های سازمانی است.",
+                "InfoDirect provides structured Excel files with exhibitor contact details across multiple industries. Helping sales and marketing teams quickly access prospects and expand B2B collaborations.",
               "contactPoint": [
                 {
                   "@type": "ContactPoint",
@@ -98,10 +98,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebPage",
-              "url": "https://infodirect.ir",
-              "name": "لیست‌های اکسل اطلاعات تماس شرکت‌کنندگان نمایشگاهی",
+              "url": "https://infodirect.ir/en",
+              "name": "Excel Lists of Exhibition Participants",
               "description":
-                "ارائه فایل‌های اکسل ساختاریافته شامل نام شرکت، صنعت، وب‌سایت، ایمیل و شماره تماس برای استفاده در فروش، بازاریابی B2B و توسعه همکاری‌های سازمانی."
+                "Structured Excel files including company name, industry, website, email, and phone number for B2B sales, marketing, and business development."
             })
           }}
         />
@@ -115,7 +115,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
       </head>
       <body className="font-sans antialiased bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-500">
-        {children}
+        <Providers>
+          <Tracker />   {/* 👈 ثبت بازدید صفحه */}
+          {children}
+        </Providers>
 
         {/* ======================== */}
         {/* Dark Mode Flicker Fix */}

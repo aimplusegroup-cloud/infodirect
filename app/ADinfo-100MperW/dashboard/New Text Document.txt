@@ -1,0 +1,80 @@
+import { NextResponse } from "next/server"
+import prisma from "@/lib/prisma"
+
+function getDateWindow(range: "day" | "week" | "month") {
+  const now = new Date()
+  const from = new Date(now)
+  if (range === "day") from.setDate(now.getDate() - 1)
+  else if (range === "week") from.setDate(now.getDate() - 7)
+  else if (range === "month") from.setMonth(now.getMonth() - 1)
+  return { from, to: now }
+}
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url)
+  const range = (searchParams.get("range") || "day") as "day" | "week" | "month"
+  const { from, to } = getDateWindow(range)
+
+  // KPIها
+  const visitors = await prisma.event.count({
+    where: { type: "page_view", createdAt: { gte: from, lte: to } },
+  })
+
+  const ordersCount = await prisma.order.count({
+    where: { createdAt: { gte: from, lte: to }, status: "success" },
+  })
+
+  const revenueAgg = await prisma.order.aggregate({
+    where: { createdAt: { gte: from, lte: to }, status: "success" },
+    _sum: { total: true },
+  })
+  const revenue = revenueAgg._sum.total || 0
+  const conversionRate = visitors ? ordersCount / visitors : 0
+
+  // روند روزانه
+  const events = await prisma.event.findMany({
+    where: { createdAt: { gte: from, lte: to }, type: "page_view" },
+    select: { createdAt: true },
+  })
+  const orders = await prisma.order.findMany({
+    where: { createdAt: { gte: from, lte: to }, status: "success" },
+    select: { createdAt: true, total: true },
+  })
+
+  const bucket: Record<string, { views: number; revenue: number }> = {}
+  for (const e of events) {
+    const key = e.createdAt.toISOString().slice(0, 10)
+    bucket[key] = bucket[key] || { views: 0, revenue: 0 }
+    bucket[key].views++
+  }
+  for (const o of orders) {
+    const key = o.createdAt.toISOString().slice(0, 10)
+    bucket[key] = bucket[key] || { views: 0, revenue: 0 }
+    bucket[key].revenue += o.total
+  }
+  const daily = Object.entries(bucket).map(([date, v]) => ({
+    date,
+    views: v.views,
+    revenue: v.revenue,
+  }))
+
+  // فروش بر اساس نمایشگاه
+  const salesGrouped = await prisma.orderItem.groupBy({
+    by: ["exhibition"],
+    where: { order: { createdAt: { gte: from, lte: to }, status: "success" } },
+    _sum: { unitPrice: true, quantity: true },
+  })
+
+  const sales = salesGrouped.map(s => ({
+    name: s.exhibition,
+    sales: s._sum.quantity || 0,
+    amount: (s._sum.unitPrice || 0) * (s._sum.quantity || 0),
+  }))
+
+  return NextResponse.json({
+    kpis: { visitors, orders: ordersCount, revenue, conversionRate },
+    daily,
+    sales,
+    range,
+  })
+}
