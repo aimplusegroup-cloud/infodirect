@@ -186,7 +186,7 @@ export default function Pricing() {
   }
 
   return (
-        <div className="max-w-6xl mx-auto flex flex-col md:grid md:grid-cols-2 gap-3 w-full overflow-hidden px-3 sm:px-0">
+       <div className="max-w-6xl mx-auto flex flex-col md:grid md:grid-cols-2 gap-3 w-full overflow-hidden px-3 sm:px-0">
       {/* لیست نمایشگاه‌ها */}
       <div className="border rounded-lg bg-white dark:bg-gray-900 h-[140px] sm:h-[320px] overflow-y-auto divide-y text-right flex flex-col w-full min-w-0">
         <div className="sticky top-0 bg-white dark:bg-gray-900 h-9 p-2 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
@@ -346,7 +346,7 @@ export default function Pricing() {
           <button
             onClick={handleCheckout}
             className="mt-2 w-full px-3 py-1.5 rounded-md text-white text-xs sm:text-sm 
-                                              bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 transition"
+                                             bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 transition"
             disabled={count === 0}
           >
             خرید از طریق درگاه پرداخت

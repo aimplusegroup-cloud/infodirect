@@ -3,11 +3,16 @@
 type FunnelStep = { step: string; count: number }
 
 export default function FunnelCard({ data }: { data: FunnelStep[] }) {
+  const safeData: FunnelStep[] = (data ?? []).map((s, i) => ({
+    step: String((s as any)?.step ?? `مرحله ${i + 1}`),
+    count: typeof (s as any)?.count === "number" ? (s as any).count : 0,
+  }))
+
   return (
     <div className="bg-white rounded-xl shadow-md border p-4">
       <h2 className="text-sm md:text-base font-bold mb-3">قیف تبدیل</h2>
       <div className="space-y-3">
-        {data.map((step, i) => (
+        {safeData.map((step, i) => (
           <div key={i}>
             <div className="flex justify-between text-sm">
               <span>{step.step}</span>

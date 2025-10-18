@@ -27,7 +27,7 @@ export default function Home() {
     },
     trackTouch: true,
     trackMouse: false,
-    delta: 50, // 👈 حداقل فاصله برای تشخیص سوایپ (حساسیت کمتر)
+    delta: 50,
     preventScrollOnSwipe: true,
   })
 
@@ -73,7 +73,7 @@ export default function Home() {
                            bg-gradient-to-r from-black to-cyan-500 
                            dark:from-white dark:to-cyan-400"
               >
-                از نمایشگاه بین‌المللی تهران تا دفتر کارتان، فقط یک کلیک فاصله است
+                از نمایشگاه های بین‌المللی  و دسترسی به فرصت های تجاری تا دفتر کارتان، فقط یک کلیک فاصله است
               </motion.h1>
 
               <motion.p
@@ -82,8 +82,8 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.5 }}
                 className="mt-4 md:mt-6 text-base md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
               >
-                بانک اطلاعاتی کامل کسب‌وکارهای حاضر در نمایشگاه را در قالب فایل اکسل دریافت کنید. 
-                همه‌ی اطلاعات یک‌جا، قابل جستجو و فیلتر، آماده برای بازاریابی و توسعه همکاری‌های سازمانی.
+                لیست کامل و به‌روز کسب‌وکارهای فعال در بازارهای  تخصصی را یک‌جا در قالب فایل اکسل دریافت کنید؛ 
+                اطلاعات معتبر، قابل جستجو و فیلتر، آماده برای بازاریابی هدفمند و شروع همکاری‌های جدید.
               </motion.p>
 
               <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -98,7 +98,7 @@ export default function Home() {
                   onClick={() => setStage("pricing")}
                   className="px-6 py-3 rounded-lg bg-cyan-500 text-white font-semibold shadow-md hover:bg-cyan-600 transition"
                 >
-                  مشاهده نمایشگاه ‌ها
+                  مشاهده فرصت ها
                 </button>
               </div>
             </div>

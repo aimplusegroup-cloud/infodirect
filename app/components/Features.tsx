@@ -67,7 +67,7 @@ export default function Features({ setStage }) {
                      text-sm sm:text-base bg-cyan-500 
                      hover:bg-cyan-600 transition shadow-md"
         >
-          مشاهده نمایشگاه‌ها
+          مشاهده فرصت ها
         </button>
       </motion.div>
     </div>

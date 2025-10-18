@@ -4,8 +4,20 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tool
 
 type TrendItem = { date: string; views: number; revenue: number }
 
-export default function TrendsCard({ range, data }: { range: "day" | "week" | "month"; data?: TrendItem[] }) {
-  const safeData = data && data.length > 0 ? data : []
+export default function TrendsCard({
+  range,
+  data,
+}: {
+  range: "day" | "week" | "month"
+  data?: TrendItem[]
+}) {
+  const safeData: TrendItem[] = (data ?? []).map((d: any, i) => ({
+    date: String(d?.date ?? d?.label ?? `pt-${i}`),
+    views: typeof d?.views === "number" ? d.views : typeof d?.count === "number" ? d.count : 0,
+    revenue: typeof d?.revenue === "number" ? d.revenue : typeof d?.amount === "number" ? d.amount : 0,
+  }))
+
+  const hasData = safeData.length > 0
 
   return (
     <div className="bg-white rounded-xl shadow-md border p-4 h-[400px] flex flex-col">
@@ -14,8 +26,8 @@ export default function TrendsCard({ range, data }: { range: "day" | "week" | "m
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={safeData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
+            <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+            <YAxis tick={{ fontSize: 12 }} />
             <Tooltip />
             <Legend />
             <Line type="monotone" dataKey="views" stroke="#06b6d4" name="بازدید" dot={false} />
@@ -23,7 +35,7 @@ export default function TrendsCard({ range, data }: { range: "day" | "week" | "m
           </LineChart>
         </ResponsiveContainer>
 
-        {(!data || data.length === 0) && (
+        {!hasData && (
           <div className="absolute inset-0 flex items-center justify-center text-sm text-gray-500 bg-white/70">
             داده‌ای برای نمایش وجود ندارد
           </div>
