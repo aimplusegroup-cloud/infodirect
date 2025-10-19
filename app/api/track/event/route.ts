@@ -13,13 +13,17 @@ export async function POST(req: Request) {
         referrer,
         device,
         sessionId: sessionId || crypto.randomUUID(),
-        meta,
+        // چون meta در schema.prisma از نوع String? هست
+        meta: meta ? JSON.stringify(meta) : null,
       },
     })
 
     return NextResponse.json({ ok: true })
   } catch (e) {
     console.error("Track event error:", e)
-    return NextResponse.json({ ok: false }, { status: 500 })
+    return NextResponse.json(
+      { ok: false, error: (e as Error).message },
+      { status: 500 }
+    )
   }
 }

@@ -34,11 +34,15 @@ export async function POST(req: Request) {
           })),
         },
       },
+      include: { items: true }, // آیتم‌ها رو هم برگردونیم
     })
 
     return NextResponse.json({ ok: true, order })
   } catch (e) {
     console.error("Track purchase error:", e)
-    return NextResponse.json({ ok: false }, { status: 500 })
+    return NextResponse.json(
+      { ok: false, error: (e as Error).message },
+      { status: 500 }
+    )
   }
 }

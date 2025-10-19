@@ -6,6 +6,7 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { sessionId, device } = body
 
+    // یک event از نوع session_start ثبت می‌کنیم
     await prisma.event.create({
       data: {
         type: "session_start",
@@ -17,6 +18,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true })
   } catch (e) {
     console.error("Track init error:", e)
-    return NextResponse.json({ ok: false }, { status: 500 })
+    return NextResponse.json(
+      { ok: false, error: (e as Error).message },
+      { status: 500 }
+    )
   }
 }
