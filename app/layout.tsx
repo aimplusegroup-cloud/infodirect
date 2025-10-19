@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 import { headers } from "next/headers"
 import Script from "next/script"
 import Providers from "./providers"
-import Tracker from "./Tracker"
+import Tracker from "./components/Tracker" // مسیر درست به Tracker
 
 export const metadata: Metadata = {
   title: "Infodirect",
@@ -119,6 +119,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="font-sans antialiased bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-500">
         <Providers>
+          {/* Tracker سراسری برای ثبت همه‌ی eventها */}
           <Tracker />
           {children}
         </Providers>
