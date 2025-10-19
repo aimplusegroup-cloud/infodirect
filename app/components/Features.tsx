@@ -20,10 +20,11 @@ export default function Features({ setStage }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="mt-3 text-2xl md:text-3xl font-bold mb-4
+        className="features-title mt-3 text-2xl md:text-3xl font-bold mb-4
                    bg-clip-text text-transparent 
                    bg-gradient-to-r from-black to-cyan-500 
-                   dark:from-white dark:to-cyan-400"
+                   dark:text-cyan-400
+                   md:dark:bg-clip-text md:dark:text-transparent md:dark:from-white md:dark:to-cyan-400"
       >
         چرا این فایل ها و اطلاعات می‌تواند مسیر شما را تغییر دهد؟
       </motion.h2>
@@ -36,11 +37,12 @@ export default function Features({ setStage }) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
-            // 👇 در موبایل کارت آخر حذف میشه تا خیلی شلوغ نشه
-            className={`p-2 md:p-3 border rounded-md hover:shadow-md transition 
+            className={`p-2 md:p-3 border rounded-md transition 
                        bg-white dark:bg-gray-800 
                        border-gray-200 dark:border-gray-700 
                        flex flex-col items-center text-center
+                       hover:shadow-md hover:-translate-y-1
+                       dark:hover:shadow-lg dark:hover:shadow-cyan-500/20
                        ${i === items.length - 1 ? "hidden sm:flex" : ""}`}
           >
             <div className="text-base md:text-lg mb-1">{item.icon}</div>

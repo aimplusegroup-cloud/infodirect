@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { useSwipeable } from "react-swipeable"
 import Image from "next/image"
 
 import ScenesNetwork from "./components/ScenesNetwork"
@@ -16,26 +15,9 @@ const stages: Stage[] = ["hero", "features", "pricing", "footer"]
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("hero")
-  const currentIndex = stages.indexOf(stage)
-
-  const handlers = useSwipeable({
-    onSwipedLeft: () => {
-      if (currentIndex < stages.length - 1) setStage(stages[currentIndex + 1])
-    },
-    onSwipedRight: () => {
-      if (currentIndex > 0) setStage(stages[currentIndex - 1])
-    },
-    trackTouch: true,
-    trackMouse: false,
-    delta: 50,
-    preventScrollOnSwipe: true,
-  })
 
   return (
-    <main
-      {...handlers}
-      className="relative w-full h-screen bg-neutral-50 dark:bg-gray-900 overflow-hidden touch-pan-y transition-colors duration-500"
-    >
+    <main className="relative w-full h-screen bg-neutral-50 dark:bg-gray-900 overflow-hidden touch-pan-y transition-colors duration-500">
       {/* پس‌زمینه شبکه */}
       <ScenesNetwork />
 
@@ -43,11 +25,11 @@ export default function Home() {
       <header className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between p-4">
         <Image
           src="/infodirect.png"
-          alt="infodirect.png"
+          alt="infodirect logo"
           width={64}
           height={64}
           priority
-          className="dark:invert"
+          className="object-contain"
         />
         <ThemeToggle />
       </header>
@@ -64,28 +46,39 @@ export default function Home() {
             className="absolute inset-0 z-10 flex items-center justify-center px-6"
           >
             <div className="text-center max-w-3xl">
+              {/* تیتر اصلی */}
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-3xl md:text-6xl font-extrabold tracking-tight 
-                           bg-clip-text text-transparent 
-                           bg-gradient-to-r from-black to-cyan-500 
-                           dark:from-white dark:to-cyan-400"
+                className="
+                  hero-title
+                  text-3xl md:text-6xl font-extrabold tracking-tight
+                  bg-clip-text text-transparent 
+                  bg-gradient-to-r from-black to-cyan-500
+                  dark:text-cyan-400
+                  md:dark:bg-clip-text md:dark:text-transparent md:dark:from-white md:dark:to-cyan-400
+                "
               >
-                از نمایشگاه های بین‌المللی  و دسترسی به فرصت های تجاری تا دفتر کارتان، فقط یک کلیک فاصله است
+                از نمایشگاه‌های بین‌المللی و دسترسی به فرصت‌های تجاری تا دفتر کارتان، فقط یک کلیک فاصله است
               </motion.h1>
 
+              {/* متن توضیحی */}
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="mt-4 md:mt-6 text-base md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
+                className="
+                  hero-subtitle
+                  mt-4 md:mt-6 text-base md:text-xl
+                  text-gray-600 dark:text-gray-300
+                "
               >
-                لیست کامل و به‌روز کسب‌وکارهای فعال در بازارهای  تخصصی را یک‌جا در قالب فایل اکسل دریافت کنید؛ 
+                لیست کامل و به‌روز کسب‌وکارهای فعال در بازارهای تخصصی را یک‌جا در قالب فایل اکسل دریافت کنید؛ 
                 اطلاعات معتبر، قابل جستجو و فیلتر، آماده برای بازاریابی هدفمند و شروع همکاری‌های جدید.
               </motion.p>
 
+              {/* دکمه‌ها */}
               <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <button
                   onClick={() => setStage("features")}
@@ -98,7 +91,7 @@ export default function Home() {
                   onClick={() => setStage("pricing")}
                   className="px-6 py-3 rounded-lg bg-cyan-500 text-white font-semibold shadow-md hover:bg-cyan-600 transition"
                 >
-                  مشاهده فرصت ها
+                  مشاهده فرصت‌ها
                 </button>
               </div>
             </div>

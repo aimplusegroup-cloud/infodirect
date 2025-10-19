@@ -7,9 +7,8 @@ html, body {
   height: 100%;
 }
 
-/* کمک به یکنواختی تایپوگرافی */
 :root {
-  color-scheme: light dark; /* ✅ اصلاح شد */
+  color-scheme: light dark;
 }
 
 * {
@@ -25,8 +24,46 @@ html, body {
   font-display: swap;
 }
 
+/* کلاس گرادیانت عمومی */
 .text-gradient {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* ✅ تیترهای Hero در موبایل + دارک مود فیروزه‌ای ساده */
+@media (max-width: 768px) {
+  .dark h1.hero-title,
+  .dark h2.hero-title,
+  .dark h3.hero-title,
+  .dark .hero-title.text-gradient {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: #22d3ee !important; /* cyan-400 */
+    color: #22d3ee !important;
+  }
+}
+
+/* ✅ فقط متن توضیحی Hero در موبایل + دارک مود سفید */
+@media (max-width: 768px) {
+  .dark p.hero-subtitle {
+    color: white !important;
+  }
+}
+
+/* ✅ تیتر Features در موبایل + دارک مود فیروزه‌ای ساده */
+@media (max-width: 768px) {
+  .dark .features-title {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: #22d3ee !important; /* cyan-400 */
+    color: #22d3ee !important;
+  }
+}
+
+/* ✅ فقط لوگوی هدر در دارک مود سفید بشه */
+.dark header img[alt*="infodirect"] {
+  filter: invert(1) brightness(2) contrast(2) !important;
 }
