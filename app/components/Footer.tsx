@@ -4,7 +4,6 @@ import Image from "next/image"
 
 export default function Footer() {
   const logos = [
-    { src: "/logos/enamad.png", alt: "اینماد" },
     { src: "/logos/samandehi.png", alt: "ساماندهی" },
     { src: "/logos/zarinpal.svg", alt: "زرین‌پال" },
     { src: "/logos/basalam.svg", alt: "باسلام" },
@@ -26,6 +25,15 @@ export default function Footer() {
           transition={{ duration: 0.5 }}
           className="grid grid-cols-3 sm:grid-cols-4 md:flex md:flex-wrap justify-center gap-4 sm:gap-6"
         >
+          {/* 🔻🔻🔻 اینجا کد رسمی اینماد رو پیست کن 🔻🔻🔻 */}
+          {/* مثال: 
+          <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=662167&Code=A6WSs1NG7HdDnLaBuSr6rq8mdanyAiRI'>
+            <img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=662167&Code=A6WSs1NG7HdDnLaBuSr6rq8mdanyAiRI' alt='' style='cursor:pointer' code='A6WSs1NG7HdDnLaBuSr6rq8mdanyAiRI'></a>
+          </a>
+          */}
+          {/* 🔺🔺🔺 همینجا پیست کن 🔺🔺🔺 */}
+
+          {/* بقیه لوگوها */}
           {logos.map((logo, i) => (
             <Image
               key={i}
