@@ -140,22 +140,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             } catch (_) {}
           `}
         </Script>
-
-        {/* ======================== */}
-        {/* Google Analytics (GA4) */}
-        {/* ======================== */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
-          strategy="afterInteractive"
-        />
-        <Script id="ga-script" strategy="afterInteractive" nonce={nonce}>
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-XXXXXXXXXX');
-          `}
-        </Script>
       </body>
     </html>
   )

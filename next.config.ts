@@ -1,14 +1,19 @@
-// next.config.ts
 import type { NextConfig } from "next";
+import bundleAnalyzer from "@next/bundle-analyzer";
 
-// 🔒 Content Security Policy
+// 🔍 فعال‌سازی Bundle Analyzer فقط وقتی ANALYZE=true باشه
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
+// 🔒 Content Security Policy (بدون Google Analytics)
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com;
+  script-src 'self' 'unsafe-inline' 'unsafe-eval';
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: https:;
   font-src 'self' https://fonts.gstatic.com;
-  connect-src 'self' https://*.google-analytics.com;
+  connect-src 'self';
   frame-ancestors 'none';
 `.replace(/\s{2,}/g, " ").trim();
 
@@ -54,4 +59,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
