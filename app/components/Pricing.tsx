@@ -344,7 +344,8 @@ export default function Pricing() {
 
           {/* دکمه‌ها */}
           <button
-            onClick={handleCheckout}
+            onClick={() => alert("درگاه پرداخت فعلاً در دسترس نیست؛ لطفاً از طریق واتس‌اپ اقدام کنید، سفارش شما به‌صورت خودکار ثبت خواهد شد.")
+  }
             className="mt-2 w-full px-3 py-1.5 rounded-md text-white text-xs sm:text-sm 
                                              bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 transition"
             disabled={count === 0}
