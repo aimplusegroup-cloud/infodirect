@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 import { headers } from "next/headers"
 import Script from "next/script"
 import Providers from "./providers"
-import Tracker from "./components/Tracker" // مسیر درست به Tracker
+import Tracker from "./components/Tracker"
 
 export const metadata: Metadata = {
   title: "Infodirect",
@@ -15,7 +15,6 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // گرفتن nonce از هدر (ست شده در middleware)
   const nonce = (await headers()).get("x-nonce") || undefined
 
   return (
@@ -108,18 +107,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             })
           }}
         />
-
-        {/* ======================== */}
-        {/* Performance Hints */}
-        {/* ======================== */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
       </head>
       <body className="font-sans antialiased bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-500">
         <Providers>
-          {/* Tracker سراسری برای ثبت همه‌ی eventها */}
           <Tracker />
           {children}
         </Providers>
