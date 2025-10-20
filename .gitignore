@@ -45,3 +45,5 @@ prisma/dev.db-journal
 
 # optional: اگر نمی‌خوای migrationها رو نگه داری
 # prisma/migrations/
+
+.vercel
