@@ -11,7 +11,7 @@ const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-  img-src 'self' data: https:;
+  img-src 'self' data: https: https://trustseal.enamad.ir https://enamad.ir;
   font-src 'self' https://fonts.gstatic.com;
   connect-src 'self';
   frame-ancestors 'none';
@@ -42,9 +42,11 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     domains: [
-      "infodirect.ir", // ✅ دامنه اصلی پروژه
-      "localhost",     // برای توسعه لوکال
-      "your-cdn.com"   // اگر CDN یا استوریج خارجی داری
+      "infodirect.ir",       // ✅ دامنه اصلی پروژه
+      "localhost",           // برای توسعه لوکال
+      "your-cdn.com",        // اگر CDN یا استوریج خارجی داری
+      "trustseal.enamad.ir", // ✅ برای لوگوی اینماد
+      "enamad.ir",           // ✅ برای لوگوی اینماد
     ],
   },
 

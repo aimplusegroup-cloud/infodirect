@@ -25,13 +25,20 @@ export default function Footer() {
           transition={{ duration: 0.5 }}
           className="grid grid-cols-3 sm:grid-cols-4 md:flex md:flex-wrap justify-center gap-4 sm:gap-6"
         >
-          {/* 🔻🔻🔻 اینجا کد رسمی اینماد رو پیست کن 🔻🔻🔻 */}
-          {/* مثال: 
-          <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=662167&Code=A6WSs1NG7HdDnLaBuSr6rq8mdanyAiRI'>
-            <img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=662167&Code=A6WSs1NG7HdDnLaBuSr6rq8mdanyAiRI' alt='' style='cursor:pointer' code='A6WSs1NG7HdDnLaBuSr6rq8mdanyAiRI'></a>
+          {/* 🔹 کد رسمی اینماد */}
+          <a
+            referrerPolicy="origin"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://trustseal.enamad.ir/?id=662167&Code=A6WSs1NG7HdDnLaBuSr6rq8mdanyAiRI"
+          >
+            <img
+              referrerPolicy="origin"
+              src="https://trustseal.enamad.ir/logo.aspx?id=662167&Code=A6WSs1NG7HdDnLaBuSr6rq8mdanyAiRI"
+              alt="Enamad"
+              style={{ cursor: "pointer" }}
+            />
           </a>
-          */}
-          {/* 🔺🔺🔺 همینجا پیست کن 🔺🔺🔺 */}
 
           {/* بقیه لوگوها */}
           {logos.map((logo, i) => (
@@ -48,7 +55,6 @@ export default function Footer() {
 
         {/* بخش اطلاعات */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto w-full text-xs sm:text-sm leading-relaxed">
-
           {/* تماس با ما */}
           <div className="text-right" dir="rtl">
             <h3 className="text-sm sm:text-base font-semibold mb-2 text-gray-800 dark:text-white">
