@@ -51,13 +51,13 @@ export default function Pricing() {
     if (selected.length === 0) setShowPreview(false)
   }, [selected])
 
-  const basePrice = (year: number) => (year === 1404 ? 490000 : 390000)
+  const basePrice = (year: number) => (year === 1404 ? 290000 : 190000)
 
   const getExhibitionPrice = (ex: Exhibition) => {
     const rows = pricingImports[ex.name]?.length || 0
     if (rows > 0 && rows < 50) {
-      return 190000
-    }
+       return 99000
+   }
     return basePrice(ex.year)
   }
 
